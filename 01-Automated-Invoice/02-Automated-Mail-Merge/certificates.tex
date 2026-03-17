@@ -1,0 +1,41 @@
+\documentclass[12pt, landscape]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{datatool}
+\usepackage{xcolor}
+\usepackage{graphicx}
+
+% Remove page numbers for certificates
+\pagestyle{empty} 
+
+\begin{document}
+
+% Load the database
+\DTLloaddb{participants}{participants.csv}
+
+% Loop through each row in the CSV
+\DTLforeach{participants}{\name=Name, \course=Course, \date=Date}{
+
+    \begin{center}
+        \vspace*{1in}
+        
+        {\Huge \textbf{Certificate of Completion}}\\[1.5cm]
+        
+        {\Large This is to certify that}\\[1cm]
+        
+        {\Huge \textcolor{blue}{\textbf{\name}}}\\[1cm]
+        
+        {\Large has successfully completed the course}\\[0.5cm]
+        
+        {\huge \textbf{\course}}\\[1.5cm]
+        
+        {\Large Awarded on this day, \date}\\[2cm]
+        
+        \rule{6cm}{0.4pt}\\
+        \textbf{Lead Instructor}
+    \end{center}
+    
+    % Force a new page for the next certificate
+    \newpage
+}
+
+\end{document}
