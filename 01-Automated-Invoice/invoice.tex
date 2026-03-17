@@ -1,0 +1,79 @@
+\documentclass[11pt]{article}
+\usepackage{geometry}
+\usepackage{datatool} % For CSV parsing and math
+\usepackage{booktabs} % For beautiful table lines
+
+\geometry{a4paper, margin=1in}
+
+% --- Configuration ---
+\newcommand{\vatrate}{0.20} % 20% VAT
+% We use a separate file for the customer name so our Python script can inject it easily
+\newcommand{\CustomerName}{\input{current_customer.txt}} 
+
+\begin{document}
+
+% Header
+\noindent
+\begin{minipage}{0.5\textwidth}
+    {\Huge \textbf{INVOICE}}\\
+    \vspace{0.5em}\\
+    \textbf{Billed To:}\\
+    \CustomerName
+\end{minipage}
+\begin{minipage}{0.5\textwidth}
+    \raggedleft
+    \textbf{Date:} \today\\
+    \textbf{Invoice \#:} \DTLcurrentpage % Placeholder for invoice number
+\end{minipage}
+
+\vspace{3em}
+
+% Load the CSV database
+\DTLloaddb{items}{items.csv}
+
+% Initialize our global SubTotal variable to 0
+\gdef\SubTotal{0}
+
+% The Invoice Table
+\noindent
+\begin{tabular*}{\textwidth}{@{\extracolsep{\fill}} l r r r @{}}
+\toprule
+\textbf{Description} & \textbf{Qty} & \textbf{Unit Price (\$)} & \textbf{Total (\$)} \\
+\midrule
+% Loop through the CSV
+\DTLforeach{items}{\desc=Item,\qty=Quantity,\price=UnitPrice}{%
+  % 1. Multiply Qty by Price to get the Row Total
+  \DTLmul{\rowtotal}{\qty}{\price}%
+  \DTLround{\rowtotal}{\rowtotal}{2}% Round to 2 decimal places
+  
+  % 2. Add Row Total to the global SubTotal
+  \DTLgadd{\SubTotal}{\rowtotal}%
+  
+  % 3. Print the row in the table
+  \desc & \qty & \price & \rowtotal \\
+}
+\bottomrule
+\end{tabular*}
+
+\vspace{2em}
+
+% --- Final Calculations ---
+% Calculate VAT amount
+\DTLmul{\VatAmount}{\SubTotal}{\vatrate}
+\DTLround{\VatAmount}{\VatAmount}{2}
+
+% Calculate Grand Total
+\DTLadd{\GrandTotal}{\SubTotal}{\VatAmount}
+\DTLround{\GrandTotal}{\GrandTotal}{2}
+
+% Summary Box
+\begin{flushright}
+\begin{tabular}{r l}
+\textbf{Subtotal:} & \$\SubTotal \\
+\textbf{VAT (20\%):} & \$\VatAmount \\
+\midrule
+\textbf{Grand Total:} & \textbf{\$\GrandTotal} \\
+\end{tabular}
+\end{flushright}
+
+\end{document}
