@@ -1,0 +1,37 @@
+\documentclass[11pt]{article}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+
+\begin{document}
+
+\section*{Daily Server Load Report}
+
+This chart is dynamically generated from the \texttt{server\_load.csv} file. If the underlying data changes, recompiling this document will automatically update the graph.
+
+\vspace{2em}
+
+\begin{center}
+\begin{tikzpicture}
+\begin{axis}[
+    title={Server CPU Usage Over 24 Hours},
+    xlabel={Hour of Day},
+    ylabel={CPU Load (\%)},
+    xmin=0, xmax=24,
+    ymin=0, ymax=100,
+    grid=major,
+    width=12cm,
+    height=7cm
+]
+
+% Read the CSV directly to plot the graph
+\addplot[
+    color=blue,
+    mark=*,
+    thick
+] table [x=Hour, y=Load, col sep=comma] {server_load.csv};
+
+\end{axis}
+\end{tikzpicture}
+\end{center}
+
+\end{document}
