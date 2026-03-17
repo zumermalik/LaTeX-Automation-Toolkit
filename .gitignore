@@ -324,3 +324,23 @@ TSWLatexianTemp*
 # option is specified. Footnotes are the stored in a file with suffix Notes.bib.
 # Uncomment the next line to have this generated file ignored.
 #*Notes.bib
+# ==========================================
+# CUSTOM RULES FOR AUTOMATION TOOLKIT
+# ==========================================
+
+# --- Python Automation ---
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+env/
+venv/
+.env
+
+# --- Project Specific ---
+# Ignore the generated output PDFs so your repo stays clean 
+# (Users should generate their own PDFs by running your scripts)
+*.pdf
+
+# Exception: If you want to include a sample PDF in the README folder later, 
+# you can force add it using: git add -f sample_invoice.pdf
