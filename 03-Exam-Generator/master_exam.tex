@@ -1,0 +1,137 @@
+% --- THE MAGIC TOGGLE ---
+% STUDENT VERSION: \documentclass[12pt, addpoints]{exam}
+% TEACHER VERSION: \documentclass[12pt, answers, addpoints]{exam}
+\documentclass[12pt, answers, addpoints]{exam}
+
+\usepackage{amsmath}
+\usepackage{listings} % For formatting code snippets
+\usepackage{xcolor}   % For styling code
+\usepackage{geometry}
+
+\geometry{margin=1in}
+
+% --- Code Snippet Styling ---
+\lstset{
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{blue}\bfseries,
+    commentstyle=\color{gray},
+    stringstyle=\color{red},
+    frame=single,
+    showstringspaces=false
+}
+
+% --- Header and Footer Setup ---
+\pagestyle{headandfoot}
+\firstpageheader{CS 301: Advanced Algorithms}{}{Midterm Examination}
+\runningheader{CS 301}{}{\studentname}
+\runningheadrule
+\firstpagefooter{}{Page \thepage\ of \numpages}{}
+\runningfooter{}{Page \thepage\ of \numpages}{}
+
+\begin{document}
+
+% --- Title Block ---
+\begin{center}
+    {\huge \textbf{Computer Science Midterm}} \\[1em]
+    {\large \textbf{Fall Semester 2026}} \\[2em]
+\end{center}
+
+\makebox[\textwidth]{Name:\enspace\hrulefill} \\[1em]
+\makebox[\textwidth]{Student ID:\enspace\hrulefill}
+
+\vspace{2em}
+
+% --- Instructions and Grading Table ---
+\begin{center}
+    \fbox{\fbox{\parbox{5.5in}{\centering
+        \textbf{Instructions:} Answer all questions in the space provided. Show your work for partial credit. 
+        Calculators are not permitted. You have 90 minutes to complete this exam.
+    }}}
+\end{center}
+
+\vspace{1em}
+
+% This table automatically calculates total points based on the \question[points] tags!
+\begin{center}
+    \gradetable[h][questions]
+\end{center}
+
+\vspace{2em}
+\hrule
+\vspace{2em}
+
+% --- The Questions ---
+\begin{questions}
+
+\section*{Part 1: Multiple Choice}
+
+\question[5] What is the worst-case time complexity of a standard quicksort algorithm?
+\begin{choices}
+    \choice $O(n)$
+    \choice $O(n \log n)$
+    \CorrectChoice $O(n^2)$
+    \choice $O(1)$
+\end{choices}
+
+\question[5] Which of the following HTTP methods is intended to be idempotent?
+\begin{checkboxes}
+    \choice POST
+    \CorrectChoice PUT
+    \choice PATCH
+    \choice None of the above
+\end{checkboxes}
+
+
+\section*{Part 2: Short Answer}
+
+\question[10] Explain the difference between a stack and a queue. Provide one practical use case for each in software engineering.
+% \fillwithlines creates blank lines for the student, but gets replaced by the solution in the answer key.
+\begin{solution}[2.5in]
+    A stack operates on a Last-In, First-Out (LIFO) principle. A practical use case is managing the "Undo" feature in a text editor or tracking the call stack in memory.\\
+    
+    A queue operates on a First-In, First-Out (FIFO) principle. A practical use case is managing background tasks in a message broker or handling requests to a shared printer.
+\end{solution}
+
+\section*{Part 3: Code Analysis}
+
+\question[15] Identify the bug in the following Python function designed to check if a string is a palindrome.
+
+\begin{lstlisting}[language=Python]
+def is_palindrome(text):
+    text = text.lower()
+    reversed_text = text[::-1]
+    if text = reversed_text:
+        return True
+    else:
+        return False
+\end{lstlisting}
+
+\begin{solution}[1.5in]
+    The bug is on line 4: \texttt{if text = reversed\_text:}. \\
+    This is an assignment operator, but it should be an equality operator (\texttt{==}). The corrected line should read: \texttt{if text == reversed\_text:}.
+\end{solution}
+
+
+\section*{Part 4: Mathematical Analysis}
+
+\question[15] Use mathematical induction to prove that the sum of the first $n$ positive integers is given by the formula:
+$$ \sum_{i=1}^{n} i = \frac{n(n+1)}{2} $$
+
+% \makeemptybox creates a blank square for students to do math in.
+\begin{solution}[3.5in]
+    \textbf{Base Case ($n=1$):} \\
+    LHS: $\sum_{i=1}^{1} i = 1$ \\
+    RHS: $\frac{1(1+1)}{2} = \frac{2}{2} = 1$. The base case holds. \\[1em]
+    \textbf{Inductive Step:} \\
+    Assume true for $n=k$: $\sum_{i=1}^{k} i = \frac{k(k+1)}{2}$. \\
+    We must show it holds for $n=k+1$: $\sum_{i=1}^{k+1} i = \frac{(k+1)(k+2)}{2}$. \\
+    $\sum_{i=1}^{k+1} i = \left(\sum_{i=1}^{k} i\right) + (k+1)$ \\
+    Substitute the inductive hypothesis: \\
+    $= \frac{k(k+1)}{2} + (k+1)$ \\
+    $= \frac{k(k+1) + 2(k+1)}{2} = \frac{(k+1)(k+2)}{2}$. \\
+    Thus, by mathematical induction, the statement is true for all $n \geq 1$.
+\end{solution}
+
+\end{questions}
+
+\end{document}
